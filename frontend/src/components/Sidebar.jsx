@@ -18,10 +18,12 @@ const Sidebar = () => {
 
       {/* Brand */}
       <div className="px-6 py-5 border-b border-slate-800">
-        <h1 className="text-white font-bold text-lg tracking-tight">ProjectFlow</h1>
+        <Link to="/" className="hover:opacity-80 transition">
+          <h1 className="text-white font-bold text-lg tracking-tight">ProjectFlow</h1>
+        </Link>
         <p className="text-slate-500 text-xs mt-0.5">{user?.username ?? 'Workspace'}</p>
       </div>
-
+      
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map((item) => {

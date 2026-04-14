@@ -26,7 +26,9 @@ const Login = () => {
 
         {/* Card */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
-
+          <Link to="/" className="flex items-center gap-1 text-slate-500 hover:text-white text-sm transition mb-6">
+            ← Back to home
+          </Link>
           {/* Error */}
           {error && (
             <div className="mb-5 bg-red-500/10 border border-red-500/30 text-red-400 text-sm rounded-lg px-4 py-3">
