@@ -2,7 +2,7 @@ from django.urls import path
 from .views import (
     ProjectListCreateView, ProjectDetailView,
     TaskListCreateView, TaskDetailView, TaskStatusUpdateView,
-    CommentListCreateView, ActivityLogListView
+    CommentListCreateView, CommentDeleteView, ActivityLogListView
 )
 
 urlpatterns = [
@@ -17,4 +17,5 @@ urlpatterns = [
 
     # Comments
     path('<int:project_id>/tasks/<int:task_id>/comments/', CommentListCreateView.as_view(), name='comment-list-create'),
+    path('<int:project_id>/tasks/<int:task_id>/comments/<int:pk>/', CommentDeleteView.as_view(), name='comment-delete'),
 ]
