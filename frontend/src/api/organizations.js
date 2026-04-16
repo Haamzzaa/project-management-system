@@ -1,7 +1,7 @@
 import axiosInstance from './axiosInstance'
 
-export const getOrganizations = () => axiosInstance.get('api/orgs/')
-export const createOrganization = (data) => axiosInstance.post('api/orgs/', data)
-export const getOrganization = (orgId) => axiosInstance.get(`api/orgs/${orgId}/`)
-export const inviteUser = (orgId, data) => axiosInstance.post(`api/orgs/${orgId}/invite/`, data)
-export const getMembers = (orgId) => axiosInstance.get(`api/orgs/${orgId}/members/`)
+export const getOrganizations = () => axiosInstance.get('orgs/')
+export const createOrganization = (data) => axiosInstance.post('orgs/', data)
+export const getOrganization = (orgId) => axiosInstance.get(`orgs/${orgId}/`)
+export const inviteUser = (orgId, data) => axiosInstance.post(`orgs/${orgId}/invite/`, data)
+export const getMembers = (orgId) => axiosInstance.get(`orgs/${orgId}/members/`)
