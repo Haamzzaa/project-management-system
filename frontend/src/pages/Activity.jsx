@@ -28,7 +28,7 @@ const Activity = () => {
     const fetchActivity = async () => {
       setLoading(true)
       try {
-        const res = await axiosInstance.get(`orgs/${selectedOrg.id}/activity/`)
+        const res = await axiosInstance.get(`/api/orgs/${selectedOrg.id}/activity/`)
         setActivities(res.data)
       } catch {
         setError('Failed to load activity.')
