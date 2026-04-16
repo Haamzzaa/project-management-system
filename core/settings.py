@@ -98,15 +98,15 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = 'accounts.User'
 
 CORS_ALLOWED_ORIGINS = [
-    origin for origin in [
-        os.environ.get("https://project-management-system-pink.vercel.app/"),
-        "http://localhost:5173",
-    ] if origin
+    "https://project-management-system-pink.vercel.app",
+    "http://localhost:5173",
 ]
+
+
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://project-management-system-pink.vercel.app/",
+    "https://project-management-system-pink.vercel.app",
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
