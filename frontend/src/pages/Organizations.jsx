@@ -67,22 +67,19 @@ const Organizations = () => {
   }
 
   const handleInvite = async (e) => {
-  e.preventDefault()
-  setError(null)
-  try {
-    await inviteUser(selectedOrg.id, {
-      email: inviteEmail,
-      role: "member",
-    })
-    setInviteEmail('')
-    setShowInviteForm(false)
-    setSuccess('Invite sent successfully.')
-    setTimeout(() => setSuccess(null), 3000)
-    fetchMembers(selectedOrg.id)
-  } catch {
-    setError('Failed to send invite. Check the email and try again.')
+    e.preventDefault()
+    setError(null)
+    try {
+      await inviteUser(selectedOrg.id, { email: inviteEmail })
+      setInviteEmail('')
+      setShowInviteForm(false)
+      setSuccess('Invite sent successfully.')
+      setTimeout(() => setSuccess(null), 3000)
+      fetchMembers(selectedOrg.id)
+    } catch {
+      setError('Failed to send invite. Check the email and try again.')
+    }
   }
-}
 
   const getInitials = (name) =>
     name
