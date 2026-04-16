@@ -27,7 +27,7 @@ const Register = () => {
     setError(null)
     try {
       await axiosInstance.post('auth/register/', {
-        username: formData.username,
+        username: formData.email,
         email: formData.email,
         password: formData.password,
       })
