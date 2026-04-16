@@ -37,7 +37,7 @@
 
         try {
           // ✅ uses env variable, not hardcoded localhost
-          const res = await axios.post(`${BASE_URL}/api/auth/token/refresh/`, {
+          const res = await axios.post(`${BASE_URL}/auth/token/refresh/`, {
             refresh: refreshToken,
           })
           const newAccess = res.data.access
