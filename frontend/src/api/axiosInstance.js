@@ -1,7 +1,9 @@
 import axios from 'axios'
 
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000"
+
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8000",
+  baseURL: BASE_URL,
 });
 
 // Attach JWT token to every request automatically
@@ -34,7 +36,8 @@ axiosInstance.interceptors.response.use(
       }
 
       try {
-        const res = await axios.post('http://127.0.0.1:8000/api/auth/token/refresh/', {
+        // ✅ uses env variable, not hardcoded localhost
+        const res = await axios.post(`${BASE_URL}/api/auth/token/refresh/`, {
           refresh: refreshToken,
         })
         const newAccess = res.data.access
