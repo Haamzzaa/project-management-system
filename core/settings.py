@@ -3,6 +3,8 @@ import dj_database_url
 import os
 from datetime import timedelta
 from dotenv import load_dotenv
+from corsheaders.defaults import default_headers
+
 
 load_dotenv()
 
@@ -29,10 +31,10 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -102,6 +104,14 @@ CORS_ALLOWED_ORIGINS = [
     ] if origin
 ]
 CORS_ALLOW_CREDENTIALS = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://project-management-system-pink.vercel.app/",
+]
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
+]
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
