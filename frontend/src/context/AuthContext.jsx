@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     if (!token) return
     const fetchUser = async () => {
       try {
-        const res = await axiosInstance.get('/api/auth/user/')
+        const res = await axiosInstance.get('auth/user/')
         setUser(res.data)
       } catch {
         localStorage.removeItem('access_token')
@@ -28,11 +28,11 @@ export const AuthProvider = ({ children }) => {
   setLoading(true)
   setError(null)
   try {
-    const res = await axiosInstance.post('/api/auth/login/', { email, password })
+    const res = await axiosInstance.post('auth/login/', { email, password })
     localStorage.setItem('access_token', res.data.access)
     localStorage.setItem('refresh_token', res.data.refresh)
     // fetch real user data instead of just storing email
-    const userRes = await axiosInstance.get('/api/auth/user/')
+    const userRes = await axiosInstance.get('auth/user/')
     setUser(userRes.data)
     return true
   } catch (err) {
