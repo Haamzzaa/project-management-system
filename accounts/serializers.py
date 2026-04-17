@@ -27,24 +27,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenSerializer(TokenObtainPairSerializer):
-    username_field = 'email'
-
     def validate(self, attrs):
-        email = attrs.get("email")
-        password = attrs.get("password")
-
-        user = authenticate(
-            request=self.context.get('request'),
-            username=email,  # Django still uses username internally
-            password=password
-        )
-
-        if not user:
-            raise serializers.ValidationError("Invalid credentials")
-
-        data = super().validate({
-            "username": user.username,
-            "password": password
-        })
-
-        return data
+        attrs['username'] = attrs.get('email')
+        return super().validate(attrs)
