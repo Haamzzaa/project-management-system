@@ -21,4 +21,8 @@ class MembershipSerializer(serializers.ModelSerializer):
 
 class InviteUserSerializer(serializers.Serializer):
     email = serializers.EmailField()
-    role = serializers.ChoiceField(choices=['admin', 'manager', 'member'])
+    # Reference the model choices directly — stays in sync automatically
+    role = serializers.ChoiceField(
+        choices=Membership.Role.choices,
+        default=Membership.Role.MEMBER
+    )

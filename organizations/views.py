@@ -70,3 +70,72 @@ class MemberListView(generics.ListAPIView):
     def get_queryset(self):
         org_id = self.kwargs['org_id']
         return Membership.objects.filter(organization_id=org_id)
+    
+class RemoveMemberView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsOrgAdmin]
+
+    def delete(self, request, org_id, user_id):
+        org = get_object_or_404(Organization, id=org_id)
+
+        # Guard 1: Can't remove yourself
+        if request.user.id == user_id:
+            return Response(
+                {'error': 'You cannot remove yourself from the organization.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Guard 2: Can't remove the last admin
+        target_membership = get_object_or_404(Membership, organization=org, user_id=user_id)
+        if target_membership.role == Membership.Role.ADMIN:
+            admin_count = Membership.objects.filter(
+                organization=org,
+                role=Membership.Role.ADMIN
+            ).count()
+            if admin_count <= 1:
+                return Response(
+                    {'error': 'Cannot remove the last admin of the organization.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        target_membership.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ── NEW: Update a member's role ───────────────────────────
+
+class UpdateMemberRoleView(APIView):
+    permission_classes = [permissions.IsAuthenticated, IsOrgAdmin]
+
+    def patch(self, request, org_id, user_id):
+        org = get_object_or_404(Organization, id=org_id)
+
+        # Guard: Can't demote yourself
+        if request.user.id == user_id:
+            return Response(
+                {'error': 'You cannot change your own role.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        new_role = request.data.get('role')
+        if new_role not in [choice[0] for choice in Membership.Role.choices]:
+            return Response(
+                {'error': f'Invalid role. Choose from: admin, manager, member.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Guard: Can't demote the last admin
+        target_membership = get_object_or_404(Membership, organization=org, user_id=user_id)
+        if target_membership.role == Membership.Role.ADMIN and new_role != Membership.Role.ADMIN:
+            admin_count = Membership.objects.filter(
+                organization=org,
+                role=Membership.Role.ADMIN
+            ).count()
+            if admin_count <= 1:
+                return Response(
+                    {'error': 'Cannot demote the last admin of the organization.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+        target_membership.role = new_role
+        target_membership.save()
+        return Response(MembershipSerializer(target_membership).data)    

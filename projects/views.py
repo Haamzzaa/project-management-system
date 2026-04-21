@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from organizations.models import Organization
 from organizations.permissions import IsOrgMember, IsOrgAdminOrManager
+from organizations.permissions import IsOrgMember, IsOrgAdminOrManager, IsTaskOwnerOrElevated
 from .models import Project, Task, TaskAssignment, Comment, ActivityLog
 from .serializers import (
     ProjectSerializer, TaskSerializer,
@@ -62,7 +63,9 @@ class TaskListCreateView(generics.ListCreateAPIView):
 
 class TaskDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TaskSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOrgMember]
+    # IsOrgMember runs first (has_permission) — gates non-members out entirely
+    # IsTaskOwnerOrElevated runs second (has_object_permission) — gates non-owners/non-admins out of writes
+    permission_classes = [permissions.IsAuthenticated, IsOrgMember, IsTaskOwnerOrElevated]
 
     def get_queryset(self):
         project_id = self.kwargs['project_id']
