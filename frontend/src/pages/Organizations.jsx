@@ -18,6 +18,7 @@ const Organizations = () => {
   const [inviteEmail, setInviteEmail] = useState('')
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
+  const [inviteRole, setInviteRole] = useState('member')
 
   useEffect(() => {
     fetchOrgs()
@@ -232,12 +233,24 @@ const Organizations = () => {
                       required
                       className="flex-1 bg-slate-800 border border-slate-700 text-white placeholder-slate-500 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
+                    {/* 👇 NEW ROLE SELECT */}
+                    <select
+                      value={inviteRole}
+                      onChange={(e) => setInviteRole(e.target.value)}
+                      className="bg-slate-800 border border-slate-700 text-white rounded-lg px-3 py-2.5 text-sm focus:outline-none"
+                    >
+                      <option value="member">Member</option>
+                      <option value="manager">Manager</option>
+                      <option value="admin">Admin</option>
+                    </select>
+
                     <button
                       type="submit"
                       className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-4 py-2.5 rounded-lg transition"
                     >
                       Send
                     </button>
+
                     <button
                       type="button"
                       onClick={() => setShowInviteForm(false)}
