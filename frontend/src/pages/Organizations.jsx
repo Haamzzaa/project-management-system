@@ -263,13 +263,13 @@ const Organizations = () => {
                           className="flex items-center gap-3 bg-slate-800 rounded-lg px-4 py-3"
                         >
                           <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center text-slate-300 text-xs font-semibold shrink-0">
-                            {getInitials(member.username || member.email)}
+                            {getInitials(member.user?.username || member.user?.email)}
                           </div>
                           <div className="min-w-0 flex-1">
                             <p className="text-white text-sm font-medium truncate">
-                              {member.username || 'Unknown'}
+                              {member.user?.username || member.user?.email || 'Unknown'}
                             </p>
-                            <p className="text-slate-500 text-xs truncate">{member.email}</p>
+                            <p className="text-slate-500 text-xs truncate">{member.user?.email}</p>
                           </div>
                           {member.role && (
                             <span className="text-xs bg-indigo-600/20 text-indigo-400 px-2 py-1 rounded-full shrink-0">
