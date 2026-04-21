@@ -71,7 +71,10 @@ const Organizations = () => {
     e.preventDefault()
     setError(null)
     try {
-      await inviteUser(selectedOrg.id, { email: inviteEmail })
+      await inviteUser(selectedOrg.id, {
+        email: inviteEmail,
+        role: inviteRole
+      })
       setInviteEmail('')
       setShowInviteForm(false)
       setSuccess('Invite sent successfully.')
