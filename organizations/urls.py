@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import OrganizationListCreateView, OrganizationDetailView, InviteUserView, MemberListView
+from .views import OrganizationListCreateView, OrganizationDetailView, InviteUserView, MemberListView, RemoveMemberView, UpdateMemberRoleView
 
 urlpatterns = [
     path('', OrganizationListCreateView.as_view(), name='org-list-create'),
