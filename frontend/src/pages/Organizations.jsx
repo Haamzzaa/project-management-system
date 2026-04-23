@@ -13,9 +13,7 @@ const Organizations = () => {
   const [selectedOrg, setSelectedOrg] = useState(null)
   const { user } = useAuth()
   const [members, setMembers] = useState([])
-  const currentUserRole = user
-    ? members.find((m) => m.user?.id === user.id)?.role
-    : null
+  const [currentUserRole, setCurrentUserRole] = useState(null)
   const [loading, setLoading] = useState(false)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showInviteForm, setShowInviteForm] = useState(false)
@@ -34,6 +32,16 @@ const Organizations = () => {
     if (!selectedOrg) return
     fetchMembers(selectedOrg.id)
   }, [selectedOrg])
+  
+  useEffect(() => {
+  if (!user || members.length === 0) return
+
+  const role = members.find(
+    (m) => m.user?.id === user.id
+  )?.role || null
+
+  setCurrentUserRole(role)
+}, [members, user])
 
   const fetchOrgs = async () => {
     setLoading(true)
