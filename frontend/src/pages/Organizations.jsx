@@ -235,10 +235,7 @@ const Organizations = () => {
                     </div>
                   </div>
                   {currentUserRole === 'admin' && (
-                    <button
-                      onClick={() => setShowInviteForm(!showInviteForm)}
-                      className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition"
-                    >
+                    <button onClick={() => setShowInviteForm(!showInviteForm)}>
                       + Invite Member
                     </button>
                   )}
