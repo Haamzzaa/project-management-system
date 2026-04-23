@@ -13,9 +13,9 @@ const Organizations = () => {
   const [selectedOrg, setSelectedOrg] = useState(null)
   const { user } = useAuth()
   const [members, setMembers] = useState([])
-  const currentUserRole = members?.length && user
-  ? members.find((m) => m.user?.id === user.id)?.role
-  : null
+  const currentUserRole = user
+    ? members.find((m) => m.user?.id === user.id)?.role
+    : null
   const [loading, setLoading] = useState(false)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showInviteForm, setShowInviteForm] = useState(false)
