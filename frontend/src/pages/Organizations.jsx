@@ -11,9 +11,7 @@ import {
 const Organizations = () => {
   const [organizations, setOrganizations] = useState([])
   const [selectedOrg, setSelectedOrg] = useState(null)
-  const { user } = useAuth()
   const [members, setMembers] = useState([])
-  const [currentUserRole, setCurrentUserRole] = useState(null)
   const [loading, setLoading] = useState(false)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showInviteForm, setShowInviteForm] = useState(false)
@@ -32,16 +30,6 @@ const Organizations = () => {
     if (!selectedOrg) return
     fetchMembers(selectedOrg.id)
   }, [selectedOrg])
-  
-  useEffect(() => {
-  if (!user || members.length === 0) return
-
-  const role = members.find(
-    (m) => m.user?.id === user.id
-  )?.role || null
-
-  setCurrentUserRole(role)
-}, [members, user])
 
   const fetchOrgs = async () => {
     setLoading(true)
@@ -226,23 +214,21 @@ const Organizations = () => {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold">{selectedOrg.name}</h3>
-                      <p className="text-xs text-slate-400 mt-1">
-                        Your Role: <span className="text-white">{currentUserRole || '...'}</span>
-                      </p>
                       {selectedOrg.description && (
                         <p className="text-slate-400 text-xs mt-0.5">{selectedOrg.description}</p>
                       )}
                     </div>
                   </div>
-                  {currentUserRole === 'admin' && (
-                    <button onClick={() => setShowInviteForm(!showInviteForm)}>
-                      + Invite Member
-                    </button>
-                  )}
+                  <button
+                    onClick={() => setShowInviteForm(!showInviteForm)}
+                    className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition"
+                  >
+                    + Invite Member
+                  </button>
                 </div>
 
                 {/* Invite Form */}
-                {showInviteForm && currentUserRole === 'admin' && (
+                {showInviteForm && (
                   <form onSubmit={handleInvite} className="flex gap-3 mb-6">
                     <input
                       type="email"
