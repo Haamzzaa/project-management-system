@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from '../context/AuthContext'
 import Sidebar from '../components/Sidebar'
 import {
   getOrganizations,
@@ -11,6 +12,9 @@ const Organizations = () => {
   const [organizations, setOrganizations] = useState([])
   const [selectedOrg, setSelectedOrg] = useState(null)
   const [members, setMembers] = useState([])
+  const currentUserRole = members.find(
+  (m) => m.user?.id === user?.id
+  )?.role
   const [loading, setLoading] = useState(false)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [showInviteForm, setShowInviteForm] = useState(false)
@@ -19,6 +23,7 @@ const Organizations = () => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [inviteRole, setInviteRole] = useState('member')
+  const { user } = useAuth()
 
   useEffect(() => {
     fetchOrgs()
@@ -212,21 +217,26 @@ const Organizations = () => {
                     </div>
                     <div>
                       <h3 className="text-white font-semibold">{selectedOrg.name}</h3>
+                      <p className="text-xs text-slate-400 mt-1">
+                        Your Role: <span className="text-white">{currentUserRole || '...'}</span>
+                      </p>
                       {selectedOrg.description && (
                         <p className="text-slate-400 text-xs mt-0.5">{selectedOrg.description}</p>
                       )}
                     </div>
                   </div>
-                  <button
-                    onClick={() => setShowInviteForm(!showInviteForm)}
-                    className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition"
-                  >
-                    + Invite Member
-                  </button>
+                  {currentUserRole === 'admin' && (
+                    <button
+                      onClick={() => setShowInviteForm(!showInviteForm)}
+                      className="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition"
+                    >
+                      + Invite Member
+                    </button>
+                  )}
                 </div>
 
                 {/* Invite Form */}
-                {showInviteForm && (
+                {showInviteForm && currentUserRole === 'admin' && (
                   <form onSubmit={handleInvite} className="flex gap-3 mb-6">
                     <input
                       type="email"
@@ -288,7 +298,15 @@ const Organizations = () => {
                             <p className="text-slate-500 text-xs truncate">{member.user?.email}</p>
                           </div>
                           {member.role && (
-                            <span className="text-xs bg-indigo-600/20 text-indigo-400 px-2 py-1 rounded-full shrink-0">
+                            <span
+                              className={`text-xs px-2 py-1 rounded-full shrink-0 ${
+                                member.role === 'admin'
+                                  ? 'bg-red-500/20 text-red-400'
+                                  : member.role === 'manager'
+                                  ? 'bg-blue-500/20 text-blue-400'
+                                  : 'bg-gray-500/20 text-gray-400'
+                              }`}
+                            >
                               {member.role}
                             </span>
                           )}
