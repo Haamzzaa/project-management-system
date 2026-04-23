@@ -11,6 +11,7 @@ import {
 const Organizations = () => {
   const [organizations, setOrganizations] = useState([])
   const [selectedOrg, setSelectedOrg] = useState(null)
+  const { user } = useAuth()
   const [members, setMembers] = useState([])
   const currentUserRole = members?.length && user
   ? members.find((m) => m.user?.id === user.id)?.role
@@ -23,7 +24,7 @@ const Organizations = () => {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [inviteRole, setInviteRole] = useState('member')
-  const { user } = useAuth()
+
 
   useEffect(() => {
     fetchOrgs()
