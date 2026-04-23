@@ -102,11 +102,14 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+]
 
 CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://project-management-system-pink.vercel.app",
+    "https://*.vercel.app",
 ]
 
 CORS_ALLOW_HEADERS = list(default_headers) + [
